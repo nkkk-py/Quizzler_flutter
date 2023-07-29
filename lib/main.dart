@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:quizzler_flutter/question.dart';
 
 void main() => runApp(const Quizzler());
 
@@ -30,32 +33,62 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  int questionNumber = 0;
+
+  List<Widget> scoreKeeper = [];
+
+  /*List<String> questions = [
+    'You can lead a cow down stairs but not up stairs.',
+    'Approximately one quarter of human bones are in the feet.',
+    'A slug\'s blood is green.'
+  ];
+
+  List<bool> answers = [false, true, true];
+
+  Question q1 = Question(
+    question: 'You can lead a cow down stairs but not up stairs.',
+    answer: false,
+  );
+  Question q2 = Question(
+    question: 'Approximately one quarter of human bones are in the feet.',
+    answer: false,
+  );
+  Question q3 = Question(
+    question: 'A slug\'s blood is green.',
+    answer: false,
+  );
+*/
+
+  List<Question> questionBank = [
+    Question(
+      question: 'You can lead a cow down stairs but not up stairs.',
+      answer: false,
+    ),
+    Question(
+      question: 'Approximately one quarter of human bones are in the feet.',
+      answer: true,
+    ),
+    Question(
+      question: 'A slug\'s blood is green.',
+      answer: true,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    List<Widget> scoreKeeper = [
-      Icon(
-        Icons.check,
-        color: Colors.green,
-      ),
-      Icon(
-        Icons.close,
-        color: Colors.red,
-      ),
-    ];
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        const Expanded(
+        Expanded(
           flex: 5,
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questionBank[questionNumber].questionText,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25.0,
                   color: Colors.white,
                 ),
@@ -79,6 +112,18 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
+                bool correctAnswer =
+                    questionBank[questionNumber].questionAnswer;
+
+                // if (correctAnswer == true)
+                if (correctAnswer)
+                  print('User got it right');
+                else
+                  print('User got it wrong');
+
+                setState(() {
+                  questionNumber = Random().nextInt(3);
+                });
               },
             ),
           ),
@@ -99,6 +144,17 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
+                bool correctAnswer =
+                    questionBank[questionNumber].questionAnswer;
+
+                // if (correctAnswer == false)
+                if (!correctAnswer)
+                  print('User got it right');
+                else
+                  print('User got it wrong');
+                setState(() {
+                  questionNumber = Random().nextInt(3);
+                });
               },
             ),
           ),
